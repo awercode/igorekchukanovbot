@@ -26,10 +26,22 @@ async def menu_handler(message: Message):
         Keyboard(one_time=False, inline=False)
         .add(Text("Показать чуканова"), color=KeyboardButtonColor.NEGATIVE)
         .row()
-        .add(Text("магазин"), color=KeyboardButtonColor.SECONDARY)
+        .add(Text("Магазин"), color=KeyboardButtonColor.PRIMARY)
+        .add(Text("Помощь"), color=KeyboardButtonColor.SECONDARY)
         .get_json()
     )
     await message.answer("меню бота чуканов бот", attachment=random.choice(photos_list), keyboard=MenuKeyboard)
+
+@bot.on.message(text="Помощь")
+async def pomogimne(message: Message):
+    await message.answer(
+        "💡Команды бота:\n\
+        Показать чуканова – показывает чуканова\n\
+        Меню – обновляет меню\n\
+        Стикер это важно – отправляет илью олю важную\n\
+        Любой другой стикер – присылает его id (может быть полезно, но в данном случае скорее всего только мне)\n\
+        Магазин – открывает меню магазина, где можно купить нагиева, диван и остальное потом"
+    )
 
 @bot.on.message(text="Показать чуканова")
 async def pokazat_handler(message: Message):
