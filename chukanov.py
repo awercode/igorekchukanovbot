@@ -1,3 +1,4 @@
+lang="python"
 from vkbottle.bot import Bot, Message, rules
 from vkbottle import GroupEventType, GroupTypes, Keyboard, KeyboardButtonColor, Text, VKAPIError, TemplateElement, template_gen
 import random
