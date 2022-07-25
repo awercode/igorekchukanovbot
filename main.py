@@ -1,6 +1,7 @@
 from aiohttp import Payload
 from vkbottle.bot import Bot, Message, rules
 from vkbottle import GroupEventType, GroupTypes, Keyboard, KeyboardButtonColor, Text, VKAPIError, TemplateElement, template_gen, ShowSnackbarEvent, Callback
+from vkbottle.dispatch.rules.base import CommandRule
 import random
 
 photos_list = [
@@ -15,13 +16,36 @@ messages_list = ["Ayuwoki hehee!", "ааа этш же чуканов афиге
 names_list = ["елена анатольевна", "карине егишевна", "дмитрий нагиев"]
 
 bot = Bot(token="vk1.a._uzVQTrqQDnRtuhOPbWuPdx7H5aIJOioMltY0FKrGbK_hS7RTL0EKFtHQoE87Z3VjZ8tNGYKlW5rFy4oys7UqSqik21rbyjCsKiuytnYj1Sn0ywd_Q5HGwEg7joqiZH8_qYE6csEUcxscA_0Dna8ZEz3wqXg0_6ODUK91Kkl6G_FxzVU8M89555G3Xucwdk8")
+bot.labeler.vbml_ignore_case = True
 
 bot.labeler.message_view.replace_mention = True
+
+@bot.on.message(text="Меню")
+async def menu_handler(message: Message):
+    MenuKeyboard = (
+        Keyboard(one_time=False, inline=False)
+        .add(Text("Показать чуканова"), color=KeyboardButtonColor.NEGATIVE)
+        .row()
+        .add(Text("магазин"), color=KeyboardButtonColor.SECONDARY)
+        .get_json()
+    )
+    await message.answer("меню бота чуканов бот", attachment=random.choice(photos_list), keyboard=MenuKeyboard)
 
 @bot.on.message(text="Показать чуканова")
 async def pokazat_handler(message: Message):
     await message.answer(random.choice(messages_list), attachment=random.choice(photos_list))
     #await message.answer("тест, {}".format(users_info[0].first_name))
+
+@bot.on.message(attachment="sticker")
+async def sticker_handler(message: Message):
+    if message.attachments[0].sticker.sticker_id == 62951:
+        await message.answer(attachment="photo-203890312_457239059")
+    else:
+        await message.answer(f"ℹ️ID стикера: {message.attachments[0].sticker.sticker_id}")
+
+#@bot.on.message(sticker=62951)
+#async def etovajno(message: Message):
+    #await message.answer(attachment="photo-203890312_457239059")
 
 @bot.on.message(text=messages_list)
 async def povtoryat_handler(message: Message):
