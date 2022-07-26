@@ -17,12 +17,12 @@ photos_list = [
 ]
 
 messages_list = [
-    "Ayuwoki hehee!", "ааа этш же чуканов афигеть круто", "что за хкйню я тут пишу", "IGREG",
+    "Ayuwoki hehee!", "ааа этш же чуканов афигеть круто", "IGREG",
     "может быть добавить старые сррьшея эеще", "NAGIEV", "Сделай скриншот\nОтправь боту (н ечуканову)",
     "Показать чуканова", "и ты мой последний предатель которого я не прощу", "говорит игорь ч.",
     "новый хит игоря чуканова", "между нами провоДА", "ахаха чуканов смешной", "ржака смеяка",
     "Good morning Elena ANATOLEVNA", "скотина", "кто оскорбляет анатольевну тот скотина",
-    "ANATOLEVNA SMESHNAYA"]
+    "ANATOLEVNA SMESHNAYA", "Cold War Iron Curtain: Русская Локализация [Beta 3.1]"]
 
 names_list = ["елена анатольевна", "карине егишевна", "дмитрий нагиев"]
 
@@ -64,7 +64,6 @@ async def pokazat_handler(message: Message):
         await message.answer(f"💡Отправлено сообщений: {colvosoobsheniyspam}")
     else:
         await message.answer(random.choice(messages_list), attachment=random.choice(photos_list))
-    print(message.peer_id)
 
 @bot.on.message(attachment="sticker")
 async def sticker_handler(message: Message):
@@ -73,26 +72,28 @@ async def sticker_handler(message: Message):
     else:
         await message.answer(f"ℹ️ID стикера: {message.attachments[0].sticker.sticker_id}")
 
-#@bot.on.message(sticker=62951)
-#async def etovajno(message: Message):
-    #await message.answer(attachment="photo-203890312_457239059")
-
 @bot.on.message(text=messages_list)
 async def povtoryat_handler(message: Message):
     await message.answer("пизда " + random.choice(names_list) + " ты че за мной повторяешь")
 
 @bot.on.message(text=["магазин", "нагиев"])
 async def nagievhandler(message: Message):
-    #keyboardnagiev = Keyboard().add(Text("купить нагиева онлайн"), color=KeyboardButtonColor.POSITIVE)
     keyboardnagiev = (
         Keyboard(one_time=False)
         .add(Callback("Купить", payload={"cmd": "buynagiev"}))
+        .add(Callback("Цена: 1,28 ₽", payload={"cmd": "buynagiev"}))
         .get_json()
     )
-    #keyboarddivan = Keyboard().add(Text("купить диван"), color=KeyboardButtonColor.NEGATIVE)
     keyboarddivan = (
         Keyboard(one_time=False)
         .add(Callback("Купить", payload={"cmd": "buydivan"}))
+        .add(Callback("Цена: 90 800,00 ₽", payload={"cmd": "buydivan"}))
+        .get_json()
+    )
+    keyboartransportir = (
+        Keyboard(one_time=False)
+        .add(Callback("Купить", payload={"cmd": "buytransportir"}))
+        .add(Callback("Цена: 67,00 ₽", payload={"cmd": "buytransportir"}))
         .get_json()
     )
     magazinkarusel = template_gen(
@@ -107,6 +108,12 @@ async def nagievhandler(message: Message):
             "купить диван",
             "-203890312_457239057",
             keyboarddivan
+        ),
+        TemplateElement(
+            "Транспортир",
+            "DZHAGAZPANYAN",
+            "-203890312_457239085",
+            keyboartransportir
         )
     )
     
@@ -139,6 +146,17 @@ async def handle_message_event(event: GroupTypes.MessageEvent):
         users_info = await bot.api.users.get(event.object.user_id)
         await bot.api.messages.send(
             peer_id=event.object.peer_id, message="{} {} купила диван".format(users_info[0].first_name, users_info[0].last_name).lower(), random_id=0
+        )
+    elif event.object.payload == {'cmd': 'buytransportir'}:
+        await bot.api.messages.send_message_event_answer(
+            event_id=event.object.event_id,
+            user_id=event.object.user_id,
+            peer_id=event.object.peer_id,
+            event_data=ShowSnackbarEvent(text="Вы успешно купили транспортир!").json(),
+        )
+        users_info = await bot.api.users.get(event.object.user_id)
+        await bot.api.messages.send(
+            peer_id=event.object.peer_id, message="{} {} купил транспортир".format(users_info[0].first_name, users_info[0].last_name).lower(), random_id=0
         )
 
 @bot.on.raw_event(GroupEventType.GROUP_JOIN, dataclass=GroupTypes.GroupJoin)
