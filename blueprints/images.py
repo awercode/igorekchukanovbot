@@ -39,8 +39,10 @@ async def genimage(message: Message, textforimage: None):
 
             W, H = img.size
             w, h = idraw.textsize(textforimage)
-
-            headline = ImageFont.truetype('arial.ttf', size = 30)
+            
+            font = ImageFont.load_default()
+            
+            headline = ImageFont.truetype(font, size = 30)
             idraw.text(((W-w)/2,(H-h)/2), textforimage, font=headline)
 
             img.save('imageandtext.jpg')
