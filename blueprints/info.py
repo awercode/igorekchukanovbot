@@ -4,11 +4,14 @@ from vkbottle.bot import Bot, Blueprint, Message, rules
 from vkbottle import GroupEventType, GroupTypes, Keyboard, KeyboardButtonColor, Text, VKAPIError, TemplateElement, template_gen, ShowSnackbarEvent, Callback
 from vkbottle.dispatch.rules.base import CommandRule
 import random
+import logging
 
 bp = Blueprint("Main commands")
 
 bp.labeler.vbml_ignore_case = True
 bp.labeler.message_view.replace_mention = True
+
+logging.basicConfig(level=logging.INFO)
 
 photos_list = [
     "photo-203890312_457239017", "photo-203890312_457239018", "photo-203890312_457239019", "photo-203890312_457239020",

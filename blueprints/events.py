@@ -4,11 +4,14 @@ from vkbottle.bot import Bot, Blueprint, Message, rules
 from vkbottle import GroupEventType, GroupTypes, Keyboard, KeyboardButtonColor, Text, VKAPIError, TemplateElement, template_gen, ShowSnackbarEvent, Callback
 from vkbottle.dispatch.rules.base import CommandRule
 import random
+import logging
 
 bp = Blueprint("Events handler")
 
 bp.labeler.vbml_ignore_case = True
 bp.labeler.message_view.replace_mention = True
+
+logging.basicConfig(level=logging.INFO)
 
 @bp.on.raw_event(GroupEventType.MESSAGE_EVENT, dataclass=GroupTypes.MessageEvent)
 async def handle_message_event(event: GroupTypes.MessageEvent):
