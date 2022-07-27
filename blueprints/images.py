@@ -9,6 +9,7 @@ import asyncio
 import requests
 import logging
 from typing import Tuple
+from pathlib import Path
 
 bp = Blueprint("Images generator")
 
@@ -17,10 +18,10 @@ logging.basicConfig(level=logging.INFO)
 bp.labeler.vbml_ignore_case = True
 bp.labeler.message_view.replace_mention = True
 
-@bp.on.message(text=["!genimage <textforimage>", "!genimage"])
+@bp.on.message(text="!genimage <textforimage>")
 async def genimage(message: Message, textforimage: None):
     textforimage = textforimage
-    if textforimage is None:
+    if textforimage == "" or textforimage == None:
         await message.answer("вы забыли написать текст", attachment="photo-203890312_457239099")
     else:
         if message.attachments == []:
@@ -39,7 +40,10 @@ async def genimage(message: Message, textforimage: None):
             W, H = img.size
             w, h = idraw.textsize(textforimage)
 
-            headline = ImageFont.truetype('arial.ttf', size = 30)
+            home = Path.home()
+            font_path = Path(home, "blueprints", "arial.ttf")
+
+            headline = ImageFont.truetype(font_path, size = 30)
             idraw.text(((W-w)/2,(H-h)/2), textforimage, font=headline)
 
             img.save('imageandtext.jpg')
