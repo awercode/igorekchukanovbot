@@ -40,10 +40,10 @@ async def genimage(message: Message, textforimage: None):
             W, H = img.size
             w, h = idraw.textsize(textforimage)
 
-            home = Path.home()
-            font_path = Path(home, "blueprints", "arial.ttf")
+            #home = Path.home()
+            #font_path = Path(home, "blueprints", "arial.ttf")
 
-            headline = ImageFont.truetype(font_path, size = 30)
+            headline = ImageFont.truetype("Courier", size = 30)
             idraw.text(((W-w)/2,(H-h)/2), textforimage, font=headline)
 
             img.save('imageandtext.jpg')
