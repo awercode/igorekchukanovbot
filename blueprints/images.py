@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 bp.labeler.vbml_ignore_case = True
 bp.labeler.message_view.replace_mention = True
 
-@bp.on.message(text="!genimage [<textforimage>]")
+@bp.on.message(text="!genimage <textforimage>")
 async def genimage(message: Message, textforimage: None):
     textforimage = textforimage
     if textforimage == "" or textforimage == None:
@@ -43,7 +43,7 @@ async def genimage(message: Message, textforimage: None):
             #home = Path.home()
             #font_path = Path(home, "blueprints", "arial.ttf")
 
-            headline = ImageFont.truetype("Bukhari Script", size = 30)
+            headline = ImageFont.truetype("Arial", size = 30)
             idraw.text(((W-w)/2,(H-h)/2), textforimage, font=headline)
 
             img.save('imageandtext.jpg')
