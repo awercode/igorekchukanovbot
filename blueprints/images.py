@@ -51,3 +51,7 @@ async def genimage(message: Message, textforimage: None):
             photo_uploader = PhotoMessageUploader(message.ctx_api)
             photo_attachment = await photo_uploader.upload("imageandtext.jpg")
             await message.answer(attachment=photo_attachment)
+
+@bp.on.message(text="!genimage")
+async def genimagebeztexta(message: Message):
+    await message.answer("вы забыли написать текст", attachment="photo-203890312_457239099")
